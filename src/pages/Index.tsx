@@ -2,6 +2,7 @@
 import MainLayout from '@/layouts/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Calendar } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Index = () => {
   return (
@@ -22,9 +23,11 @@ const Index = () => {
               Accès rapide
             </h2>
             <div className="space-y-4">
-              <Button className="w-full justify-start bg-epie-blue hover:bg-epie-blue-dark">
-                <Calendar className="mr-2 h-5 w-5" />
-                Demander un congé
+              <Button className="w-full justify-start bg-epie-blue hover:bg-epie-blue-dark" asChild>
+                <Link to="/conges">
+                  <Calendar className="mr-2 h-5 w-5" />
+                  Demander un congé
+                </Link>
               </Button>
               {/* Autres boutons d'accès rapide à ajouter */}
             </div>
