@@ -1,48 +1,48 @@
 
 // Types pour la gestion des congés
 
-// Type de congé
+// Type de congé - définit les différents types de congés disponibles dans l'application
 export type LeaveType = {
-  id: string;
-  name: string;          // Nom du type de congé (ex: "Congés payés", "RTT", "Maladie")
-  color: string;         // Couleur pour l'affichage dans le calendrier
-  maxDaysPerYear?: number; // Nombre maximum de jours par an (optionnel)
-  requiresJustification?: boolean; // Si un justificatif est requis
-  default?: boolean;     // Si c'est le type par défaut
+  id: string;                    // Identifiant unique du type de congé
+  name: string;                  // Nom affiché du type de congé (ex: "Congés payés", "RTT", "Maladie")
+  color: string;                 // Couleur pour l'affichage dans le calendrier et les graphiques
+  maxDaysPerYear?: number;       // Nombre maximum de jours par an (optionnel, pour les congés limités)
+  requiresJustification?: boolean; // Si un justificatif est requis (ex: certificat médical)
+  default?: boolean;             // Si c'est le type de congé proposé par défaut dans le formulaire
 };
 
-// Statut d'une demande de congé
+// Statut d'une demande de congé - représente les différents états possibles d'une demande
 export enum LeaveRequestStatus {
-  PENDING = "pending",   // En attente
-  APPROVED = "approved", // Approuvée
-  REJECTED = "rejected", // Rejetée
-  CANCELLED = "cancelled" // Annulée par l'employé
+  PENDING = "pending",     // En attente de validation par le manager
+  APPROVED = "approved",   // Approuvée par le manager
+  REJECTED = "rejected",   // Rejetée par le manager
+  CANCELLED = "cancelled"  // Annulée par l'employé avant validation
 }
 
-// Demande de congé
+// Demande de congé - structure d'une demande complète
 export type LeaveRequest = {
-  id: string;
-  employeeId: string;
-  leaveTypeId: string;
-  startDate: Date;
-  endDate: Date;
-  halfDayStart?: boolean; // Si le premier jour est un demi-jour
-  halfDayEnd?: boolean;   // Si le dernier jour est un demi-jour
-  businessDays: number;   // Nombre de jours ouvrés calculés
-  reason?: string;        // Motif (optionnel)
-  status: LeaveRequestStatus;
-  createdAt: Date;
-  updatedAt: Date;
-  managerComment?: string; // Commentaire du manager lors de l'approbation/rejet
+  id: string;              // Identifiant unique de la demande
+  employeeId: string;      // Identifiant de l'employé qui fait la demande
+  leaveTypeId: string;     // Type de congé demandé (référence l'id du LeaveType)
+  startDate: Date;         // Date de début du congé
+  endDate: Date;           // Date de fin du congé
+  halfDayStart?: boolean;  // Si le premier jour est un demi-jour (matin ou après-midi)
+  halfDayEnd?: boolean;    // Si le dernier jour est un demi-jour (matin ou après-midi)
+  businessDays: number;    // Nombre de jours ouvrés calculés (jours travaillés, hors weekends et jours fériés)
+  reason?: string;         // Motif de la demande (obligatoire pour certains types de congés)
+  status: LeaveRequestStatus; // Statut actuel de la demande
+  createdAt: Date;         // Date de création de la demande
+  updatedAt: Date;         // Date de dernière modification
+  managerComment?: string; // Commentaire du manager lors de l'approbation/rejet (optionnel)
 };
 
-// Solde de congés
+// Solde de congés - suivi du nombre de jours disponibles par type de congé pour un employé
 export type LeaveBalance = {
-  employeeId: string;
-  leaveTypeId: string;
-  total: number;         // Total de jours accordés
-  used: number;          // Jours utilisés
-  scheduled: number;     // Jours programmés (demandes approuvées)
-  pending: number;       // Jours en attente de validation
-  remaining: number;     // Jours restants (total - used - scheduled)
+  employeeId: string;      // Identifiant de l'employé concerné
+  leaveTypeId: string;     // Type de congé concerné
+  total: number;           // Total de jours accordés pour l'année en cours
+  used: number;            // Jours déjà utilisés (demandes terminées)
+  scheduled: number;       // Jours programmés dans le futur (demandes approuvées)
+  pending: number;         // Jours en attente de validation (demandes en cours)
+  remaining: number;       // Jours restants disponibles (total - used - scheduled)
 };

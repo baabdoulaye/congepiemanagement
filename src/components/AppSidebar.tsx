@@ -30,14 +30,14 @@ const menuItems = [
     url: "/calendrier"
   },
   {
-    title: "Équipe",
-    icon: Users,
-    url: "/equipe"
-  },
-  {
     title: "Rapports",
     icon: FileText,
     url: "/rapports"
+  },
+  {
+    title: "Équipe",
+    icon: Users,
+    url: "/equipe"
   }
 ];
 
