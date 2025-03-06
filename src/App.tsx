@@ -6,7 +6,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import RequestLeave from "./pages/leave/RequestLeave"; // Import de la nouvelle page
+import RequestLeave from "./pages/leave/RequestLeave";
+import LeaveCalendar from "./pages/leave/LeaveCalendar";
+import UserManagement from "./pages/admin/UserManagement";
 
 const queryClient = new QueryClient();
 
@@ -19,7 +21,9 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/conges" element={<RequestLeave />} /> {/* Nouvelle route */}
+          <Route path="/conges" element={<RequestLeave />} />
+          <Route path="/calendrier" element={<LeaveCalendar />} />
+          <Route path="/admin/utilisateurs" element={<UserManagement />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

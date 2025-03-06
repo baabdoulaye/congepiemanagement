@@ -1,5 +1,5 @@
 
-import { Home, Calendar, Users, Settings, FileText } from 'lucide-react';
+import { Home, Calendar, Users, Settings, FileText, ClipboardList, UserCog } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -10,18 +10,24 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { Link } from 'react-router-dom';
 
 // Configuration des éléments du menu
 const menuItems = [
   {
     title: "Tableau de bord",
     icon: Home,
-    url: "/dashboard"
+    url: "/"
   },
   {
     title: "Mes congés",
-    icon: Calendar,
+    icon: ClipboardList,
     url: "/conges"
+  },
+  {
+    title: "Calendrier",
+    icon: Calendar,
+    url: "/calendrier"
   },
   {
     title: "Équipe",
@@ -32,11 +38,20 @@ const menuItems = [
     title: "Rapports",
     icon: FileText,
     url: "/rapports"
+  }
+];
+
+// Éléments du menu Admin
+const adminItems = [
+  {
+    title: "Gestion des utilisateurs",
+    icon: UserCog,
+    url: "/admin/utilisateurs"
   },
   {
     title: "Paramètres",
     icon: Settings,
-    url: "/parametres"
+    url: "/admin/parametres"
   }
 ];
 
@@ -54,10 +69,28 @@ const AppSidebar = () => {
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url} className="flex items-center gap-3 text-gray-600 hover:text-epie-blue transition-colors">
+                    <Link to={item.url} className="flex items-center gap-3 text-gray-600 hover:text-epie-blue transition-colors">
                       <item.icon className="h-5 w-5" />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        
+        <SidebarGroup>
+          <SidebarGroupLabel>Administration</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {adminItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild>
+                    <Link to={item.url} className="flex items-center gap-3 text-gray-600 hover:text-epie-blue transition-colors">
+                      <item.icon className="h-5 w-5" />
+                      <span>{item.title}</span>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
