@@ -10,6 +10,7 @@ import RequestLeave from "./pages/leave/RequestLeave";
 import LeaveCalendar from "./pages/leave/LeaveCalendar";
 import UserManagement from "./pages/admin/UserManagement";
 import LeaveReports from "./pages/reports/LeaveReports";
+import Login from "./pages/auth/Login";
 
 // Création du client de requêtes pour React Query
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/calendrier" element={<LeaveCalendar />} />
           <Route path="/rapports" element={<LeaveReports />} />
           <Route path="/admin/utilisateurs" element={<UserManagement />} />
+          <Route path="/connexion" element={<Login />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

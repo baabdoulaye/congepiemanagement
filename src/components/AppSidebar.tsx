@@ -1,5 +1,5 @@
 
-import { Home, Calendar, Users, Settings, FileText, ClipboardList, UserCog } from 'lucide-react';
+import { Home, Calendar, Users, FileText, ClipboardList } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -9,6 +9,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar
 } from "@/components/ui/sidebar";
 import { Link } from 'react-router-dom';
 
@@ -33,11 +34,6 @@ const menuItems = [
     title: "Rapports",
     icon: FileText,
     url: "/rapports"
-  },
-  {
-    title: "Équipe",
-    icon: Users,
-    url: "/equipe"
   }
 ];
 
@@ -45,31 +41,25 @@ const menuItems = [
 const adminItems = [
   {
     title: "Gestion des utilisateurs",
-    icon: UserCog,
+    icon: Users,
     url: "/admin/utilisateurs"
-  },
-  {
-    title: "Paramètres",
-    icon: Settings,
-    url: "/admin/parametres"
   }
 ];
 
 // Composant de la barre latérale
 const AppSidebar = () => {
+  const { state } = useSidebar();
+  
   return (
-    <Sidebar>
-      <div className="p-4">
-        <h1 className="text-2xl font-bold text-epie-blue">CONGEPIE</h1>
-      </div>
+    <Sidebar variant="sidebar" collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <Link to={item.url} className="flex items-center gap-3 text-gray-600 hover:text-epie-blue transition-colors">
+                  <SidebarMenuButton asChild tooltip={item.title}>
+                    <Link to={item.url} className="flex items-center gap-3 text-foreground hover:text-epie-blue transition-colors">
                       <item.icon className="h-5 w-5" />
                       <span>{item.title}</span>
                     </Link>
@@ -86,8 +76,8 @@ const AppSidebar = () => {
             <SidebarMenu>
               {adminItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <Link to={item.url} className="flex items-center gap-3 text-gray-600 hover:text-epie-blue transition-colors">
+                  <SidebarMenuButton asChild tooltip={item.title}>
+                    <Link to={item.url} className="flex items-center gap-3 text-foreground hover:text-epie-blue transition-colors">
                       <item.icon className="h-5 w-5" />
                       <span>{item.title}</span>
                     </Link>

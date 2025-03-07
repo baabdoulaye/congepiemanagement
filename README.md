@@ -1,69 +1,71 @@
-# Welcome to your Lovable project
 
-## Project info
+# CONGEPIE - Gestion des Congés
 
-**URL**: https://lovable.dev/projects/409cd4d2-e622-43d4-b92f-80d012799655
+Application de gestion des congés pour entreprises, permettant aux employés de soumettre des demandes de congés et aux managers de les approuver.
 
-## How can I edit this code?
+## Fonctionnalités
 
-There are several ways of editing your application.
+- Authentification des utilisateurs
+- Soumission de demandes de congés
+- Approbation/rejet des demandes
+- Visualisation du calendrier des congés
+- Rapports et statistiques
+- Mode jour/nuit
+- Interface responsive
 
-**Use Lovable**
+## Architecture technique
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/409cd4d2-e622-43d4-b92f-80d012799655) and start prompting.
+### Frontend
+- React avec TypeScript
+- React Router pour la navigation
+- Tailwind CSS pour le style
+- shadcn/ui pour les composants
+- React Query pour la gestion des données
 
-Changes made via Lovable will be committed automatically to this repo.
+### Backend
+- Node.js avec Express
+- MongoDB pour la base de données
+- JWT pour l'authentification
 
-**Use your preferred IDE**
+## Installation
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Prérequis
+- Node.js (v14 ou plus)
+- MongoDB (local ou Atlas)
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Configuration du frontend
+1. Installer les dépendances : `npm install`
+2. Démarrer le serveur de développement : `npm run dev`
 
-Follow these steps:
+### Configuration du backend
+1. Accéder au dossier backend : `cd backend`
+2. Installer les dépendances : `npm install`
+3. Configurer le fichier .env avec vos variables d'environnement
+4. Démarrer le serveur : `npm run dev`
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## Structure du projet
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```
+congepie/
+├── src/              # Code source frontend
+│   ├── components/   # Composants React
+│   ├── layouts/      # Layouts de l'application
+│   ├── pages/        # Pages de l'application
+│   ├── hooks/        # Hooks personnalisés
+│   ├── types/        # Types TypeScript
+│   └── ...
+├── backend/          # Code source backend
+│   ├── models/       # Modèles MongoDB
+│   ├── routes/       # Routes API
+│   ├── middlewares/  # Middlewares
+│   └── ...
+└── ...
 ```
 
-**Edit a file directly in GitHub**
+## Développement
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Mode jour/nuit
+L'application intègre un mode jour/nuit réactif qui s'adapte aux préférences de l'utilisateur et peut être changé manuellement.
 
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/409cd4d2-e622-43d4-b92f-80d012799655) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+### Responsive design
+L'interface s'adapte automatiquement aux différentes tailles d'écran, y compris les appareils mobiles.

@@ -61,6 +61,10 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Couleurs du mode sombre
+        "dark-bg": "#1a1a1a",
+        "dark-card": "#2a2a2a",
+        "dark-border": "#3a3a3a",
       },
       keyframes: {
         "accordion-down": {
