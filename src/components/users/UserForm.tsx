@@ -7,7 +7,7 @@ import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
 
-import { User, UserRole, Department } from "@/types/user";
+import { User, UserRole } from "@/types/user";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -46,7 +46,6 @@ const userFormSchema = z.object({
     message: "Adresse email invalide",
   }),
   role: z.string(),
-  departmentId: z.string().optional(),
   managerId: z.string().optional(),
   startDate: z.date({
     required_error: "La date d'embauche est requise",
@@ -55,13 +54,11 @@ const userFormSchema = z.object({
 
 interface UserFormProps {
   user?: User;
-  departments: Department[];
-  users: User[];
   onSubmit: (data: any) => void;
   onCancel: () => void;
 }
 
-const UserForm = ({ user, departments, users, onSubmit, onCancel }: UserFormProps) => {
+const UserForm = ({ user, onSubmit, onCancel }: UserFormProps) => {
   // Initialisation du formulaire
   const form = useForm<z.infer<typeof userFormSchema>>({
     resolver: zodResolver(userFormSchema),
@@ -71,7 +68,6 @@ const UserForm = ({ user, departments, users, onSubmit, onCancel }: UserFormProp
           lastName: user.lastName,
           email: user.email,
           role: user.role,
-          departmentId: user.departmentId,
           managerId: user.managerId,
           startDate: user.startDate,
         }
@@ -84,41 +80,6 @@ const UserForm = ({ user, departments, users, onSubmit, onCancel }: UserFormProp
         },
   });
 
-  // Liste des managers potentiels (pour le champ managerId)
-  const [potentialManagers, setPotentialManagers] = useState<User[]>([]);
-
-  // Filtrer les managers potentiels en fonction du département sélectionné
-  useEffect(() => {
-    const departmentId = form.watch("departmentId");
-    if (!departmentId) {
-      setPotentialManagers(users.filter(u => u.role === UserRole.MANAGER || u.role === UserRole.ADMIN));
-      return;
-    }
-    
-    // Trouver le manager du département
-    const department = departments.find(d => d.id === departmentId);
-    if (department?.managerId) {
-      const departmentManager = users.find(u => u.id === department.managerId);
-      if (departmentManager) {
-        setPotentialManagers([departmentManager]);
-        return;
-      }
-    }
-    
-    // Tous les managers ou administrateurs
-    setPotentialManagers(users.filter(u => (u.role === UserRole.MANAGER || u.role === UserRole.ADMIN) && u.departmentId === departmentId));
-  }, [form.watch("departmentId"), departments, users]);
-
-  // Observer les changements de rôle
-  useEffect(() => {
-    const role = form.watch("role");
-    
-    // Si l'utilisateur est promu manager, on efface son manager
-    if (role === UserRole.MANAGER || role === UserRole.ADMIN) {
-      form.setValue("managerId", undefined);
-    }
-  }, [form.watch("role")]);
-
   // Soumission du formulaire
   const handleSubmitForm = (data: z.infer<typeof userFormSchema>) => {
     onSubmit(data);
@@ -127,7 +88,7 @@ const UserForm = ({ user, departments, users, onSubmit, onCancel }: UserFormProp
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmitForm)} className="space-y-6">
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormField
             control={form.control}
             name="firstName"
@@ -197,34 +158,6 @@ const UserForm = ({ user, departments, users, onSubmit, onCancel }: UserFormProp
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="departmentId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Département</FormLabel>
-              <Select 
-                onValueChange={field.onChange} 
-                defaultValue={field.value}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Sélectionner un département" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {departments.map((dept) => (
-                    <SelectItem key={dept.id} value={dept.id}>
-                      {dept.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
         {form.watch("role") === UserRole.EMPLOYEE && (
           <FormField
             control={form.control}
@@ -242,11 +175,8 @@ const UserForm = ({ user, departments, users, onSubmit, onCancel }: UserFormProp
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {potentialManagers.map((manager) => (
-                      <SelectItem key={manager.id} value={manager.id}>
-                        {manager.firstName} {manager.lastName}
-                      </SelectItem>
-                    ))}
+                    <SelectItem value="manager1">Manager 1</SelectItem>
+                    <SelectItem value="manager2">Manager 2</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />

@@ -10,7 +10,9 @@ const TopNav = () => {
     <div className="flex items-center justify-between p-4 border-b bg-white z-10 relative">
       {/* Titre avec marge à gauche pour éviter le chevauchement avec le menu hamburger sur mobile */}
       <div className="flex items-center gap-2 ml-12 md:ml-0">
-        <h1 className="text-2xl font-bold text-epie-blue">CONGEPIE</h1>
+        <Link to="/">
+          <h1 className="text-2xl font-bold text-epie-blue">CONGEPIE</h1>
+        </Link>
       </div>
       
       {/* Bouton de connexion */}

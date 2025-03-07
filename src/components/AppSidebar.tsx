@@ -1,6 +1,6 @@
 
-import { useState } from 'react';
-import { Home, Calendar, Users, FileText, ClipboardList, Menu, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Home, Calendar, FileText, ClipboardList, Menu, X } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -13,7 +13,7 @@ import {
   useSidebar,
   SidebarTrigger
 } from "@/components/ui/sidebar";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Button } from './ui/button';
 
 // Configuration des éléments du menu
@@ -44,7 +44,7 @@ const menuItems = [
 const adminItems = [
   {
     title: "Gestion des utilisateurs",
-    icon: Users,
+    icon: Home,
     url: "/admin/utilisateurs"
   }
 ];
@@ -52,6 +52,7 @@ const adminItems = [
 // Composant de la barre latérale
 const AppSidebar = () => {
   const { state, openMobile, setOpenMobile } = useSidebar();
+  const location = useLocation();
   
   // Fonction pour afficher le menu sur mobile
   const toggleMobileMenu = () => {
@@ -77,13 +78,13 @@ const AppSidebar = () => {
       </Button>
       
       <Sidebar variant="sidebar" collapsible="icon">
-        <SidebarContent>
+        <SidebarContent className="bg-black md:bg-sidebar">
           {/* Bouton de fermeture pour mobile */}
           {openMobile && (
             <Button 
               variant="ghost" 
               size="icon" 
-              className="absolute top-4 right-4 z-50 md:hidden" 
+              className="absolute top-4 right-4 z-50 md:hidden text-white" 
               onClick={closeMobileMenu}
             >
               <X className="h-5 w-5" />
@@ -92,39 +93,68 @@ const AppSidebar = () => {
           )}
           
           {/* Espace supplémentaire en haut sur mobile */}
-          <div className="h-12 md:hidden"></div>
+          <div className="h-20 md:hidden"></div>
           
           <SidebarGroup>
             <SidebarGroupContent>
               <SidebarMenu>
-                {menuItems.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild tooltip={item.title}>
-                      <Link to={item.url} className="flex items-center gap-3 text-foreground hover:text-epie-blue transition-colors">
-                        <item.icon className="h-5 w-5" />
-                        <span>{item.title}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
+                {menuItems.map((item) => {
+                  const isActive = location.pathname === item.url || 
+                                  (item.url !== '/' && location.pathname.startsWith(item.url));
+                  
+                  return (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton 
+                        asChild 
+                        tooltip={item.title}
+                        isActive={isActive}
+                      >
+                        <Link to={item.url} 
+                          className={`flex items-center gap-3 transition-colors ${
+                            openMobile ? "text-white md:text-foreground" : "text-foreground"
+                          } ${
+                            isActive ? "text-epie-blue font-semibold" : "hover:text-epie-blue"
+                          }`}>
+                          <item.icon className="h-5 w-5" />
+                          <span>{item.title}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
           
           <SidebarGroup>
-            <SidebarGroupLabel>Administration</SidebarGroupLabel>
+            <SidebarGroupLabel className={openMobile ? "text-white md:text-sidebar-foreground/70" : ""}>
+              Administration
+            </SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {adminItems.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild tooltip={item.title}>
-                      <Link to={item.url} className="flex items-center gap-3 text-foreground hover:text-epie-blue transition-colors">
-                        <item.icon className="h-5 w-5" />
-                        <span>{item.title}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
+                {adminItems.map((item) => {
+                  const isActive = location.pathname === item.url;
+                  
+                  return (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton 
+                        asChild 
+                        tooltip={item.title}
+                        isActive={isActive}
+                      >
+                        <Link to={item.url} 
+                          className={`flex items-center gap-3 transition-colors ${
+                            openMobile ? "text-white md:text-foreground" : "text-foreground"
+                          } ${
+                            isActive ? "text-epie-blue font-semibold" : "hover:text-epie-blue"
+                          }`}>
+                          <item.icon className="h-5 w-5" />
+                          <span>{item.title}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>

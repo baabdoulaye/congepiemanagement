@@ -3,12 +3,10 @@ import { useState } from "react";
 import MainLayout from "@/layouts/MainLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, PieChart, FileText } from "lucide-react";
+import { PieChart, FileText } from "lucide-react";
 import TypeReport from "@/components/reports/TypeReport";
-import TeamReport from "@/components/reports/TeamReport";
 import MonthlyReport from "@/components/reports/MonthlyReport";
 import { leaveRequests } from "@/data/mockData";
-import { departments, users } from "@/data/mockUsers";
 
 // Page principale de génération de rapports sur les congés
 const LeaveReports = () => {
@@ -58,14 +56,10 @@ const LeaveReports = () => {
         
         {/* Onglets pour les différents types de rapports */}
         <Tabs defaultValue="by-type">
-          <TabsList className="grid w-full grid-cols-3 mb-8">
+          <TabsList className="grid w-full grid-cols-2 mb-8">
             <TabsTrigger value="by-type" className="flex gap-2 items-center">
               <PieChart className="h-4 w-4" />
               <span>Par type de congé</span>
-            </TabsTrigger>
-            <TabsTrigger value="by-team" className="flex gap-2 items-center">
-              <BarChart className="h-4 w-4" />
-              <span>Par équipe/service</span>
             </TabsTrigger>
             <TabsTrigger value="by-month" className="flex gap-2 items-center">
               <FileText className="h-4 w-4" />
@@ -80,19 +74,6 @@ const LeaveReports = () => {
               </h2>
               <TypeReport 
                 leaveRequests={leaveRequests}
-                year={selectedYear}
-              />
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="by-team">
-            <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-100 animate-fade-in">
-              <h2 className="text-xl font-semibold mb-6 text-epie-blue border-b pb-2">
-                Répartition par département/équipe
-              </h2>
-              <TeamReport 
-                leaveRequests={leaveRequests}
-                departments={departments}
                 year={selectedYear}
               />
             </div>
