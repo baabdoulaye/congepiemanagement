@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Home, Calendar, Users, FileText, ClipboardList, Menu } from 'lucide-react';
+import { Home, Calendar, Users, FileText, ClipboardList, Menu, X } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -58,6 +58,11 @@ const AppSidebar = () => {
     setOpenMobile(!openMobile);
   };
   
+  // Fonction pour fermer le menu sur mobile
+  const closeMobileMenu = () => {
+    setOpenMobile(false);
+  };
+  
   return (
     <>
       {/* Bouton hamburger pour mobile */}
@@ -73,6 +78,22 @@ const AppSidebar = () => {
       
       <Sidebar variant="sidebar" collapsible="icon">
         <SidebarContent>
+          {/* Bouton de fermeture pour mobile */}
+          {openMobile && (
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="absolute top-4 right-4 z-50 md:hidden" 
+              onClick={closeMobileMenu}
+            >
+              <X className="h-5 w-5" />
+              <span className="sr-only">Fermer</span>
+            </Button>
+          )}
+          
+          {/* Espace supplémentaire en haut sur mobile */}
+          <div className="h-12 md:hidden"></div>
+          
           <SidebarGroup>
             <SidebarGroupContent>
               <SidebarMenu>
