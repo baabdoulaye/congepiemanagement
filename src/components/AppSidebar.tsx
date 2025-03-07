@@ -1,5 +1,6 @@
 
-import { Home, Calendar, Users, FileText, ClipboardList } from 'lucide-react';
+import { useState } from 'react';
+import { Home, Calendar, Users, FileText, ClipboardList, Menu } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -9,9 +10,11 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar
+  useSidebar,
+  SidebarTrigger
 } from "@/components/ui/sidebar";
 import { Link } from 'react-router-dom';
+import { Button } from './ui/button';
 
 // Configuration des éléments du menu
 const menuItems = [
@@ -48,47 +51,65 @@ const adminItems = [
 
 // Composant de la barre latérale
 const AppSidebar = () => {
-  const { state } = useSidebar();
+  const { state, openMobile, setOpenMobile } = useSidebar();
+  
+  // Fonction pour afficher le menu sur mobile
+  const toggleMobileMenu = () => {
+    setOpenMobile(!openMobile);
+  };
   
   return (
-    <Sidebar variant="sidebar" collapsible="icon">
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {menuItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild tooltip={item.title}>
-                    <Link to={item.url} className="flex items-center gap-3 text-foreground hover:text-epie-blue transition-colors">
-                      <item.icon className="h-5 w-5" />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-        
-        <SidebarGroup>
-          <SidebarGroupLabel>Administration</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {adminItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild tooltip={item.title}>
-                    <Link to={item.url} className="flex items-center gap-3 text-foreground hover:text-epie-blue transition-colors">
-                      <item.icon className="h-5 w-5" />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-    </Sidebar>
+    <>
+      {/* Bouton hamburger pour mobile */}
+      <Button 
+        variant="ghost" 
+        size="icon" 
+        className="fixed top-4 left-4 z-50 md:hidden" 
+        onClick={toggleMobileMenu}
+      >
+        <Menu className="h-5 w-5" />
+        <span className="sr-only">Menu</span>
+      </Button>
+      
+      <Sidebar variant="sidebar" collapsible="icon">
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {menuItems.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild tooltip={item.title}>
+                      <Link to={item.url} className="flex items-center gap-3 text-foreground hover:text-epie-blue transition-colors">
+                        <item.icon className="h-5 w-5" />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+          
+          <SidebarGroup>
+            <SidebarGroupLabel>Administration</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {adminItems.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild tooltip={item.title}>
+                      <Link to={item.url} className="flex items-center gap-3 text-foreground hover:text-epie-blue transition-colors">
+                        <item.icon className="h-5 w-5" />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+      </Sidebar>
+    </>
   );
 };
 

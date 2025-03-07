@@ -6,9 +6,6 @@ import TopNav from '@/components/TopNav';
 
 // Layout principal de l'application
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
-  // État pour contrôler l'ouverture du menu sur mobile
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
   return (
     <SidebarProvider>
       <div className="min-h-screen flex flex-col w-full bg-background text-foreground">

@@ -6,6 +6,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import MainLayout from '@/layouts/MainLayout';
+import { X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 // Page de connexion
 const Login = () => {
@@ -14,6 +16,12 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
+
+  // Fonction pour fermer le modal et retourner à la page précédente
+  const handleClose = () => {
+    navigate(-1);
+  };
 
   // Fonction de gestion de la soumission du formulaire
   const handleSubmit = async (e: React.FormEvent) => {
@@ -46,7 +54,18 @@ const Login = () => {
   return (
     <MainLayout>
       <div className="flex justify-center items-center h-[calc(100vh-200px)]">
-        <Card className="w-full max-w-md">
+        <Card className="w-full max-w-md relative">
+          {/* Bouton de fermeture */}
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="absolute right-2 top-2 h-8 w-8" 
+            onClick={handleClose}
+            aria-label="Fermer"
+          >
+            <X className="h-4 w-4" />
+          </Button>
+          
           <CardHeader>
             <CardTitle>Connexion</CardTitle>
             <CardDescription>
