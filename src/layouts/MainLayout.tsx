@@ -9,12 +9,14 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex flex-col w-full bg-background text-foreground">
-        <TopNav />
-        <div className="flex flex-1 pt-14 md:pt-0"> {/* Ajout de padding-top pour éviter le chevauchement */}
+        <div className="flex flex-1">
           <AppSidebar />
-          <main className="flex-1 p-6 animate-fade-in">
-            {children}
-          </main>
+          <div className="flex-1 flex flex-col">
+            <TopNav />
+            <main className="flex-1 p-6 animate-fade-in">
+              {children}
+            </main>
+          </div>
         </div>
       </div>
     </SidebarProvider>
