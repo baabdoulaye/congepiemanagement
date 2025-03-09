@@ -1,4 +1,5 @@
 
+// Page d'accueil de l'application - Affiche un aperçu des fonctionnalités principales
 import MainLayout from '@/layouts/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Calendar } from 'lucide-react';
@@ -10,7 +11,7 @@ const Index = () => {
       <div className="max-w-5xl mx-auto">
         <header className="mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Bienvenue sur CONGEPIE
+            Bienvenue sur <span className="text-epie-blue">CONGEPIE</span>
           </h1>
           <p className="text-lg text-gray-600">
             Gérez vos congés simplement et efficacement

@@ -1,4 +1,3 @@
-
 import { useState, useMemo } from "react";
 import MainLayout from "@/layouts/MainLayout";
 import { Calendar as CalendarIcon, Search, Filter } from "lucide-react";
@@ -24,12 +23,11 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-// Page de calendrier des congés
+// Page de calendrier des congés - Permet de visualiser tous les congés
 const LeaveCalendar = () => {
   // État pour contrôler la date affichée
   const [currentDate, setCurrentDate] = useState(new Date());
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
   const [selectedLeaveTypes, setSelectedLeaveTypes] = useState<Record<string, boolean>>(
     Object.fromEntries(leaveTypes.map(type => [type.id, true]))
   );
@@ -61,15 +59,6 @@ const LeaveCalendar = () => {
     // Filtrer par type de congés sélectionnés
     filtered = filtered.filter(req => selectedLeaveTypes[req.leaveTypeId]);
     
-    // Filtrer par département
-    if (selectedDepartment) {
-      const departmentUserIds = users
-        .filter(user => user.departmentId === selectedDepartment)
-        .map(user => user.id);
-      
-      filtered = filtered.filter(req => departmentUserIds.includes(req.employeeId));
-    }
-    
     // Filtrer par terme de recherche
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
@@ -86,7 +75,7 @@ const LeaveCalendar = () => {
     }
     
     return filtered;
-  }, [leaveRequests, selectedLeaveTypes, selectedDepartment, searchTerm]);
+  }, [leaveRequests, selectedLeaveTypes, searchTerm]);
   
   // Obtenir les congés pour un jour spécifique
   const getLeavesForDay = (day: Date) => {
@@ -158,23 +147,6 @@ const LeaveCalendar = () => {
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
-              
-              <Select
-                onValueChange={(value) => setSelectedDepartment(value === "all" ? null : value)}
-                defaultValue="all"
-              >
-                <SelectTrigger className="w-48">
-                  <SelectValue placeholder="Tous les départements" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Tous les départements</SelectItem>
-                  {departments.map((dept) => (
-                    <SelectItem key={dept.id} value={dept.id}>
-                      {dept.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
               
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>

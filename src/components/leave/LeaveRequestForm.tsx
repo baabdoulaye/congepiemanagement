@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -30,7 +29,6 @@ import { fr } from "date-fns/locale";
 import { toast } from "@/hooks/use-toast";
 import { LeaveType } from "@/types/leave";
 
-// Schéma de validation pour le formulaire
 const leaveRequestSchema = z.object({
   leaveTypeId: z.string({
     required_error: "Veuillez sélectionner un type de congé",
@@ -51,18 +49,14 @@ const leaveRequestSchema = z.object({
   path: ["endDate"],
 });
 
-// Type pour les valeurs du formulaire
 type LeaveRequestFormValues = z.infer<typeof leaveRequestSchema>;
 
-// Props du composant
 interface LeaveRequestFormProps {
   leaveTypes: LeaveType[];
   onSubmit: (values: LeaveRequestFormValues & { businessDays: number }) => void;
 }
 
-// Composant de formulaire de demande de congés
 const LeaveRequestForm = ({ leaveTypes, onSubmit }: LeaveRequestFormProps) => {
-  // Initialisation du formulaire
   const form = useForm<LeaveRequestFormValues>({
     resolver: zodResolver(leaveRequestSchema),
     defaultValues: {
@@ -70,48 +64,38 @@ const LeaveRequestForm = ({ leaveTypes, onSubmit }: LeaveRequestFormProps) => {
       halfDayEnd: false,
     },
   });
-  
-  // Surveiller les changements de dates pour calculer le nombre de jours
+
   const startDate = form.watch("startDate");
   const endDate = form.watch("endDate");
   const halfDayStart = form.watch("halfDayStart");
   const halfDayEnd = form.watch("halfDayEnd");
-  
-  // Calculer le nombre de jours ouvrés
+
   const calculateBusinessDays = () => {
     if (startDate && endDate) {
-      // Calculer les jours ouvrés
       let days = differenceInBusinessDays(addDays(endDate, 1), startDate);
-      
-      // Ajuster pour les demi-journées
       if (halfDayStart) days -= 0.5;
       if (halfDayEnd) days -= 0.5;
-      
       return Math.max(days, 0);
     }
     return 0;
   };
-  
-  // Nombre de jours calculés
+
   const businessDays = calculateBusinessDays();
-  
-  // Gestion de la soumission
+
   const handleSubmit = (values: LeaveRequestFormValues) => {
     onSubmit({
       ...values,
       businessDays
     });
-    
-    // Afficher une notification de confirmation
+
     toast({
       title: "Demande envoyée",
       description: `Votre demande de congés a été soumise avec succès. Elle est en attente de validation.`,
     });
-    
-    // Réinitialiser le formulaire
+
     form.reset();
   };
-  
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
@@ -132,7 +116,11 @@ const LeaveRequestForm = ({ leaveTypes, onSubmit }: LeaveRequestFormProps) => {
                 </FormControl>
                 <SelectContent>
                   {leaveTypes.map((type) => (
-                    <SelectItem key={type.id} value={type.id}>
+                    <SelectItem 
+                      key={type.id} 
+                      value={type.id}
+                      className="hover:bg-gray-100 transition-colors"
+                    >
                       <div className="flex items-center">
                         <div 
                           className="h-2 w-2 rounded-full mr-2" 
@@ -148,7 +136,7 @@ const LeaveRequestForm = ({ leaveTypes, onSubmit }: LeaveRequestFormProps) => {
             </FormItem>
           )}
         />
-  
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
             control={form.control}
@@ -189,7 +177,7 @@ const LeaveRequestForm = ({ leaveTypes, onSubmit }: LeaveRequestFormProps) => {
               </FormItem>
             )}
           />
-  
+
           <FormField
             control={form.control}
             name="endDate"
@@ -232,7 +220,7 @@ const LeaveRequestForm = ({ leaveTypes, onSubmit }: LeaveRequestFormProps) => {
             )}
           />
         </div>
-  
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
             control={form.control}
@@ -251,7 +239,7 @@ const LeaveRequestForm = ({ leaveTypes, onSubmit }: LeaveRequestFormProps) => {
               </FormItem>
             )}
           />
-  
+
           <FormField
             control={form.control}
             name="halfDayEnd"
@@ -270,7 +258,7 @@ const LeaveRequestForm = ({ leaveTypes, onSubmit }: LeaveRequestFormProps) => {
             )}
           />
         </div>
-  
+
         <FormField
           control={form.control}
           name="reason"
@@ -290,7 +278,7 @@ const LeaveRequestForm = ({ leaveTypes, onSubmit }: LeaveRequestFormProps) => {
             </FormItem>
           )}
         />
-  
+
         <div className="bg-gray-50 p-4 rounded-md">
           <div className="font-medium mb-2">Récapitulatif</div>
           <div className="text-sm text-gray-600">
@@ -306,7 +294,7 @@ const LeaveRequestForm = ({ leaveTypes, onSubmit }: LeaveRequestFormProps) => {
             )}
           </div>
         </div>
-  
+
         <Button 
           type="submit" 
           className="w-full bg-epie-blue hover:bg-epie-blue-dark"
