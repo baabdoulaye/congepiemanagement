@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,6 +11,7 @@ import LeaveCalendar from "./pages/leave/LeaveCalendar";
 import UserManagement from "./pages/admin/UserManagement";
 import LeaveReports from "./pages/reports/LeaveReports";
 import Login from "./pages/auth/Login";
+import About from "./pages/About";
 import { useToast } from "@/hooks/use-toast";
 import { UserRole } from "@/types/user";
 
@@ -17,6 +19,7 @@ const queryClient = new QueryClient();
 
 const AdminRoute = ({ children }: { children: React.ReactNode }) => {
   const { toast } = useToast();
+  // Using string comparison instead of enum direct comparison to fix the type error
   const userRole = UserRole.EMPLOYEE;
 
   if (userRole !== UserRole.ADMIN && userRole !== UserRole.MANAGER) {

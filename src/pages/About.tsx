@@ -1,7 +1,11 @@
 
+// Page À propos qui présente l'application CONGEPIE
 import MainLayout from '@/layouts/MainLayout';
 
-// Page À propos qui présente l'application CONGEPIE
+/**
+ * Page d'information qui présente l'application CONGEPIE
+ * Cette page expose le but et les fonctionnalités de la plateforme
+ */
 const About = () => {
   return (
     <MainLayout>
