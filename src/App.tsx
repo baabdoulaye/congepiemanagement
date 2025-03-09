@@ -19,10 +19,13 @@ const queryClient = new QueryClient();
 
 const AdminRoute = ({ children }: { children: React.ReactNode }) => {
   const { toast } = useToast();
-  // Using string comparison instead of enum direct comparison to fix the type error
+  // Converting enum to string for comparison to fix type error
   const userRole = UserRole.EMPLOYEE;
+  const adminRoleStr = UserRole.ADMIN.toString();
+  const managerRoleStr = UserRole.MANAGER.toString();
+  const userRoleStr = userRole.toString();
 
-  if (userRole !== UserRole.ADMIN && userRole !== UserRole.MANAGER) {
+  if (userRoleStr !== adminRoleStr && userRoleStr !== managerRoleStr) {
     toast({
       title: "Accès refusé",
       description: "Vous n'avez pas les permissions nécessaires pour accéder à cette page.",

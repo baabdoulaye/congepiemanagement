@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Home, Calendar, FileText, ClipboardList, Menu, X } from 'lucide-react';
+import { Home, Calendar, FileText, ClipboardList, Menu, X, Info } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -37,6 +37,11 @@ const menuItems = [
     title: "Rapports",
     icon: FileText,
     url: "/rapports"
+  },
+  {
+    title: "À propos",
+    icon: Info,
+    url: "/a-propos"
   }
 ];
 
