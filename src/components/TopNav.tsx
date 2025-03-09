@@ -19,7 +19,7 @@ const TopNav = () => {
           variant="outline" 
           size="sm" 
           asChild
-          className="hover:bg-epie-blue hover:text-white transition-colors"
+          className="hover:bg-epie-blue hover:text-white hover:border-epie-blue transition-colors"
         >
           <Link to="/connexion">
             <UserRound className="mr-2 h-4 w-4" />
