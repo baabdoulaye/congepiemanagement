@@ -97,7 +97,11 @@ const Login = () => {
               </div>
             </CardContent>
             <CardFooter>
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              <Button 
+                type="submit" 
+                className="w-full bg-[#3db2e7] hover:bg-[#3db2e7]/90" 
+                disabled={isLoading}
+              >
                 {isLoading ? "Connexion en cours..." : "Se connecter"}
               </Button>
             </CardFooter>
