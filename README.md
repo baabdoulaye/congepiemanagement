@@ -131,11 +131,6 @@ congepie/
 2. Le frontend récupère les données nécessaires via l'API
 3. Les données sont transformées et affichées sous forme de graphiques
 
-## Développement
-
-### Mode jour/nuit
-L'application intègre un mode jour/nuit réactif qui s'adapte aux préférences de l'utilisateur et peut être changé manuellement.
-
 ### Responsive design
 L'interface s'adapte automatiquement aux différentes tailles d'écran, y compris les appareils mobiles.
 
