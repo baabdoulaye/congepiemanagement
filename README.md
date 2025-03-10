@@ -10,7 +10,6 @@ Application de gestion des congés pour entreprises, permettant aux employés de
 - Approbation/rejet des demandes
 - Visualisation du calendrier des congés
 - Rapports et statistiques
-- Mode jour/nuit
 - Interface responsive
 
 ## Architecture technique
