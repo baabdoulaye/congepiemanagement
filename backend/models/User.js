@@ -1,72 +1,97 @@
 
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+module.exports = (sequelize, DataTypes) => {
+  const User = sequelize.define('User', {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: true
+      }
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    role: {
+      type: DataTypes.ENUM('employee', 'manager', 'admin'),
+      defaultValue: 'employee'
+    },
+    avatar: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    startDate: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
+    },
+    isActive: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
+    }
+  }, {
+    hooks: {
+      beforeCreate: async (user) => {
+        if (user.password) {
+          const bcrypt = require('bcryptjs');
+          const salt = await bcrypt.genSalt(10);
+          user.password = await bcrypt.hash(user.password, salt);
+        }
+      },
+      beforeUpdate: async (user) => {
+        if (user.changed('password') && user.password) {
+          const bcrypt = require('bcryptjs');
+          const salt = await bcrypt.genSalt(10);
+          user.password = await bcrypt.hash(user.password, salt);
+        }
+      }
+    },
+    tableName: 'users'
+  });
 
-// Schéma pour les utilisateurs
-const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-    lowercase: true
-  },
-  password: {
-    type: String,
-    required: true
-  },
-  firstName: {
-    type: String,
-    required: true
-  },
-  lastName: {
-    type: String,
-    required: true
-  },
-  role: {
-    type: String,
-    enum: ['employee', 'manager', 'admin'],
-    default: 'employee'
-  },
-  departmentId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Department'
-  },
-  managerId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  },
-  avatar: String,
-  startDate: {
-    type: Date,
-    default: Date.now
-  },
-  isActive: {
-    type: Boolean,
-    default: true
-  }
-}, {
-  timestamps: true // Ajoute automatiquement createdAt et updatedAt
-});
+  User.associate = function(models) {
+    // Un utilisateur peut avoir un manager
+    User.belongsTo(models.User, {
+      foreignKey: 'managerId',
+      as: 'manager'
+    });
+    
+    // Un utilisateur peut appartenir à un département
+    User.belongsTo(models.Department, {
+      foreignKey: 'departmentId',
+      as: 'department'
+    });
 
-// Méthode pour hacher le mot de passe avant la sauvegarde
-userSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
-  
-  try {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-  } catch (error) {
-    next(error);
-  }
-});
+    // Un utilisateur peut avoir plusieurs demandes de congés
+    User.hasMany(models.Leave, {
+      foreignKey: 'userId',
+      as: 'leaves'
+    });
 
-// Méthode pour comparer les mots de passe
-userSchema.methods.comparePassword = async function(candidatePassword) {
-  return bcrypt.compare(candidatePassword, this.password);
+    // Un manager peut approuver plusieurs demandes de congés
+    User.hasMany(models.Leave, {
+      foreignKey: 'approvedById',
+      as: 'approvedLeaves'
+    });
+  };
+
+  User.prototype.comparePassword = async function(candidatePassword) {
+    const bcrypt = require('bcryptjs');
+    return bcrypt.compare(candidatePassword, this.password);
+  };
+
+  return User;
 };
-
-const User = mongoose.model('User', userSchema);
-
-module.exports = User;

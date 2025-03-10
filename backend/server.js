@@ -1,9 +1,9 @@
 
 // Importation des modules nécessaires
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const { sequelize } = require('./models');
 const userRoutes = require('./routes/userRoutes');
 const leaveRoutes = require('./routes/leaveRoutes');
 const authRoutes = require('./routes/authRoutes');
@@ -20,13 +20,18 @@ const PORT = process.env.PORT || 5000;
 app.use(cors()); // Permet les requêtes cross-origin
 app.use(express.json()); // Parse le JSON des requêtes entrantes
 
-// Connexion à MongoDB
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log('Connecté à MongoDB'))
-.catch(err => console.error('Erreur de connexion à MongoDB:', err));
+// Connexion à la base de données MySQL
+sequelize.authenticate()
+  .then(() => console.log('Connecté à MySQL'))
+  .catch(err => console.error('Erreur de connexion à MySQL:', err));
+
+// Synchronisation des modèles avec la base de données
+// En mode développement, on peut utiliser { force: true } pour recréer les tables
+if (process.env.NODE_ENV === 'development') {
+  sequelize.sync({ alter: true })
+    .then(() => console.log('Modèles synchronisés avec la base de données'))
+    .catch(err => console.error('Erreur de synchronisation des modèles:', err));
+}
 
 // Routes
 app.use('/api/auth', authRoutes);
